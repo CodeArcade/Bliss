@@ -1,17 +1,22 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Unity;
+using Bliss.Manager;
 
 namespace Bliss
 {
     public class JamGame : Game
     {
-        private GraphicsDeviceManager graphics;
-        private SpriteBatch spriteBatch;
+        private GraphicsDeviceManager Graphics;
+        private SpriteBatch SpriteBatch;
+
+        [Dependency]
+        public StateManager StateManager { get; set; }
 
         public JamGame()
         {
-            graphics = new GraphicsDeviceManager(this);
+            Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -19,22 +24,23 @@ namespace Bliss
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            Graphics.IsFullScreen = false;
+            Graphics.PreferredBackBufferWidth = 1280;
+            Graphics.PreferredBackBufferHeight = 720;
+            Graphics.ApplyChanges();
+            
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
             // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
+            StateManager.Update(gameTime);
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -42,7 +48,11 @@ namespace Bliss
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
+
+            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
+            StateManager.Draw(gameTime, SpriteBatch);
+            SpriteBatch.End();
 
             // TODO: Add your drawing code here
 
