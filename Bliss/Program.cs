@@ -1,14 +1,36 @@
 ﻿using System;
+using Unity;
+using Bliss.Manager;
 
 namespace Bliss
 {
     public static class Program
     {
+        public static IUnityContainer UnityContainer = new UnityContainer();
+
         [STAThread]
         static void Main()
         {
-            using (var game = new Game1())
-                game.Run();
+            Register();
+
+            using JamGame game = UnityContainer.Resolve<JamGame>();
+            game.Run();
+        }
+
+        static void Register()
+        {
+            RegisterManager();
+
+            UnityContainer.RegisterSingleton<JamGame>();
+        }
+
+        static void RegisterManager()
+        {
+            UnityContainer.RegisterType<ContentManager>();
+            UnityContainer.RegisterType<AudioManager>();
+            UnityContainer.RegisterType<ParticleManager>();
+            UnityContainer.RegisterType<StateManager>();
+            UnityContainer.RegisterType<AnimationManager>();
         }
     }
 }
