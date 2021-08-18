@@ -13,6 +13,7 @@ namespace Bliss.Manager
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch) => CurrentState.Draw(gameTime, spriteBatch);
 
+    // WILL CURRENTLY CRASH HERE AS NO STATE HAS BEEN CREATED YET
     public void Update(GameTime gameTime)
     {
       ChangeState();
@@ -35,7 +36,7 @@ namespace Bliss.Manager
 
     public void ChangeTo<T>(string name, params object[] parameter) where T : State
     {
-      NextState = (T)Program.UnityContainer.Resolve(CurrentState.GetType(), StateName);
+      NextState = (T)Program.UnityContainer.Resolve(typeof(T), StateName);
       StateName = name;
       Parameter = parameter;
     }

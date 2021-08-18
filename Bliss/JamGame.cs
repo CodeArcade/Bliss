@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Unity;
 using Bliss.Manager;
+using Bliss.States;
 
 namespace Bliss
 {
@@ -35,6 +36,8 @@ namespace Bliss
         protected override void LoadContent()
         {
             SpriteBatch = new SpriteBatch(GraphicsDevice);
+
+            StateManager.ChangeTo<DefaultState>(DefaultState.Name);
             // TODO: use this.Content to load your game content here
         }
 
